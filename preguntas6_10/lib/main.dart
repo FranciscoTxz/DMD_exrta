@@ -37,11 +37,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int section = 6;
+  int seccion = 6;
   List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 3, 5, 4, 4];
-  int selectedQuestionIndex = 0; // Índice de la pregunta seleccionada
-  int? selectedOption; // Variable para almacenar la opción seleccionada
-  List<List<String>> questions = [
+  int cnt_pregunta = 0; // Índice de la pregunta seleccionada
+  int? opcion_seleccionada; // Variable para almacenar la opción seleccionada
+  List<List<String>> preguntas = [
     [],
     [],
     [],
@@ -69,15 +69,15 @@ class _HomeState extends State<Home> {
     ['G', 'H', 'I'],
   ];
 
-  void _incrementCounter() {
+  void incrementar_contador() {
     setState(() {
-      selectedQuestionIndex++;
+      cnt_pregunta++;
     });
   }
 
-  void _decrementCounter() {
+  void decrementar_contador() {
     setState(() {
-      selectedQuestionIndex--;
+      cnt_pregunta--;
     });
   }
 
@@ -113,7 +113,7 @@ class _HomeState extends State<Home> {
           child: Container(
             child: Center(
               child: Text(
-                'Sección ${section}', //cambiar
+                'Sección ${seccion}', //cambiar
                 style: TextStyle(
                   fontSize: 30,
                 ),
@@ -146,7 +146,7 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 child: Center(
                                   child: Text(
-                                    '${selectedQuestionIndex + 1}',
+                                    '${cnt_pregunta + 1}',
                                     style: TextStyle(
                                       fontSize: 40,
                                     ),
@@ -169,7 +169,7 @@ class _HomeState extends State<Home> {
                             flex: 2,
                             child: Center(
                               child: Text(
-                                '${questions[section - 1][selectedQuestionIndex]}',
+                                '${preguntas[seccion - 1][cnt_pregunta]}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 30),
                               ),
@@ -183,22 +183,22 @@ class _HomeState extends State<Home> {
                     flex: 2,
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: numpreguntas[section - 1],
+                        crossAxisCount: numpreguntas[seccion - 1],
                         childAspectRatio: 0.8, // Relación de aspecto cuadrada
                         crossAxisSpacing:
                             8, // Espacio horizontal entre elementos
                         mainAxisSpacing: 8,
                       ),
-                      itemCount: numpreguntas[section -
+                      itemCount: numpreguntas[seccion -
                           1], // Cambia este valor según la cantidad de preguntas.
                       shrinkWrap: false,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              selectedOption = index;
+                              opcion_seleccionada = index;
                             });
-                            print('Opción seleccionada: $selectedOption');
+                            print('Opción seleccionada: $opcion_seleccionada');
                           },
                           child: Container(
                             padding: EdgeInsets.all(8),
@@ -206,18 +206,18 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Checkbox(
-                                  value: selectedOption == index,
+                                  value: opcion_seleccionada == index,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      selectedOption = index;
+                                      opcion_seleccionada = index;
                                     });
                                     print(
-                                        'Opción seleccionada: $selectedOption');
+                                        'Opción seleccionada: $opcion_seleccionada');
                                   },
                                   activeColor: Color.fromRGBO(182, 157, 248, 1),
                                 ),
                                 Text(
-                                  '${respuestas[section - 1][index]}',
+                                  '${respuestas[seccion - 1][index]}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 18),
                                 ),
@@ -237,9 +237,9 @@ class _HomeState extends State<Home> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              customButton('Atrás', _decrementCounter),
+              customButton('Atrás', decrementar_contador),
               SizedBox(width: 20),
-              customButton('Siguiente', _incrementCounter),
+              customButton('Siguiente', incrementar_contador),
             ],
           ),
           flex: 2,
