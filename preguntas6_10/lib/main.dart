@@ -38,7 +38,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int seccion = 6;
-  List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 3, 5, 4, 4];
+  int? numseccion;
+  List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 2, 5, 4, 4];
   int cnt_pregunta = 0; // Índice de la pregunta seleccionada
   int? opcion_seleccionada; // Variable para almacenar la opción seleccionada
   List<List<String>> preguntas = [
@@ -65,13 +66,17 @@ class _HomeState extends State<Home> {
     [],
     [],
     ['Nunca', 'A veces', 'Muchas veces', 'Siempre'],
-    ['D', 'E', 'F'],
+    ['Si', 'No'],
     ['G', 'H', 'I'],
   ];
 
   void incrementar_contador() {
     setState(() {
       cnt_pregunta++;
+      if (cnt_pregunta >= 5) {
+        seccion = 7;
+        cnt_pregunta = 0;
+      }
     });
   }
 
@@ -203,7 +208,6 @@ class _HomeState extends State<Home> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Checkbox(
                                   value: opcion_seleccionada == index,
