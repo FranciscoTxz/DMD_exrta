@@ -36,6 +36,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool validacion = false;
   int cnt = 0;
   List<int> aux = [0, 32, 38, 68, 96];
   int seccion = 6;
@@ -88,62 +89,71 @@ class _HomeState extends State<Home> {
       'No tenía ganas de comer',
       'No podía quitarme la tristeza',
       'Tenía dificultad para mantener mi mente en lo que hacía',
+    ],
+    [
+      //preguntas seccion 8
+      'r',
+      'r',
+      'r',
+      'r',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    ],
+    [
+      //preguntas seccion 9
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+    ],
+    [],
+    [
+      //preguntas seccion 7b
+      '',
+      '',
+      '',
       'Me sentía deprimido(a)',
       'Dormía, pero sin descansar',
       'Me sentía triste'
-    ],
-    [
-      'r',
-      'r',
-      'r',
-      'r',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-    ],
-    [
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-    ],
+    ]
   ];
 
   List<List<String>> respuestas = [
@@ -157,41 +167,73 @@ class _HomeState extends State<Home> {
     ['Siempre', 'Casi Siempre', 'Nunca', 'Casi nunca'],
     ['Casi siempre', 'Algunas veces', 'Rara vez', 'Casi nunca'],
     [],
-    [], //11 extra de la 7
+    [
+      'Nunca',
+      'Pocas veces',
+      'Bastantes veces',
+      'Casi todos los días'
+    ], //11 extra de la 7
   ];
 
   void incrementar_contador() {
-    setState(() {
-      num_pregunta++;
-      cnt_pregunta++;
-      //Seccion 6, 7, 8, 9
-      if (num_pregunta == 32 ||
-          num_pregunta == 38 ||
-          num_pregunta == 68 ||
-          num_pregunta == 96) {
-        cnt++;
-        seccion++;
-        seccionTitulo = seccion;
-        cnt_pregunta = 0;
-      }
-    });
+    if (opcion_seleccionada != null) {
+      setState(() {
+        if (num_pregunta != 85) {
+          num_pregunta++;
+          cnt_pregunta++;
+        }
+
+        if (num_pregunta >= 35 && num_pregunta <= 37) {
+          seccion = 11;
+        } else {
+          seccion = seccionTitulo;
+        }
+
+        //Seccion 6, 7, 8, 9
+        if (num_pregunta == 32 ||
+            num_pregunta == 38 ||
+            num_pregunta == 68 ||
+            num_pregunta == 96) {
+          cnt++;
+          seccion++;
+          seccionTitulo = seccion;
+          cnt_pregunta = 0;
+        }
+        //guardar_resultados(seccionTitulo,opcion_seleccionada);
+        //opcion_seleccionada = null; //regresa los checkbox a vacio, quitar para ir rapido
+      });
+    }
   }
 
   void decrementar_contador() {
-    setState(() {
-      cnt_pregunta--;
-      num_pregunta--;
-      //Seccion 6, 7, 8, 9
-      if (num_pregunta == 31 ||
-          num_pregunta == 37 ||
-          num_pregunta == 67 ||
-          num_pregunta == 95) {
-        seccion--;
-        seccionTitulo = seccion;
-        cnt_pregunta = num_pregunta - aux[cnt - 1];
-        cnt--;
-      }
-    });
+    if (opcion_seleccionada != null) {
+      setState(() {
+        if (num_pregunta != 0) {
+          cnt_pregunta--;
+          num_pregunta--;
+        }
+        print(num_pregunta);
+        //Seccion 6, 7, 8, 9
+        if (num_pregunta >= 35 && num_pregunta <= 37) {
+          if (num_pregunta == 37) {
+            seccionTitulo = 7;
+            cnt_pregunta = num_pregunta - aux[cnt - 1];
+            cnt--;
+          }
+          seccion = 11;
+        } else {
+          seccion = seccionTitulo;
+          if (num_pregunta == 31 || num_pregunta == 67 || num_pregunta == 95) {
+            seccion--;
+            seccionTitulo = seccion;
+            cnt_pregunta = num_pregunta - aux[cnt - 1];
+            cnt--;
+          }
+        }
+        //guardar_resultados(seccionTitulo,opcion_seleccionada);
+        //opcion_seleccionada = null; //regresa los checkbox a vacio, quitar para ir rapido
+      });
+    }
   }
 
   ElevatedButton customButton(String buttonText, VoidCallback onPressed) {
@@ -300,7 +342,7 @@ class _HomeState extends State<Home> {
                         crossAxisCount: numpreguntas[seccion - 1],
                         childAspectRatio: 0.8, // Relación de aspecto cuadrada
                         crossAxisSpacing:
-                            8, // Espacio horizontal entre elementos
+                            0, // Espacio horizontal entre elementos
                         mainAxisSpacing: 8,
                       ),
                       itemCount: numpreguntas[seccion -
@@ -322,7 +364,10 @@ class _HomeState extends State<Home> {
                                   value: opcion_seleccionada == index,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      opcion_seleccionada = index;
+                                      opcion_seleccionada =
+                                          (opcion_seleccionada == index)
+                                              ? null
+                                              : index;
                                     });
                                     print(
                                         'Opción seleccionada: $opcion_seleccionada');
@@ -332,7 +377,7 @@ class _HomeState extends State<Home> {
                                 Text(
                                   '${respuestas[seccion - 1][index]}',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 17),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
