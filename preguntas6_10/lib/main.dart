@@ -6,7 +6,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    //int cnt = 0;
     return MaterialApp(
       home: Scaffold(
         body: Stack(
@@ -37,8 +36,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int cnt = 0;
+  List<int> aux = [0, 32, 38, 68, 96];
   int seccion = 6;
-  List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 2, 4, 4, 4];
+  int seccionTitulo = 6;
+  List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 2, 4, 4, 4, 4];
   int num_pregunta = 0;
   int cnt_pregunta = 0; // Índice de la pregunta seleccionada
   int? opcion_seleccionada; // Variable para almacenar la opción seleccionada
@@ -152,8 +154,10 @@ class _HomeState extends State<Home> {
     [],
     ['Nunca', 'A veces', 'Muchas veces', 'Siempre'],
     ['Si', 'No'],
-    ['Siempre','Casi Siempre','Nunca','Casi nunca'],
-    ['Casi siempre','Algunas veces','Rara vez','Casi nunca'],
+    ['Siempre', 'Casi Siempre', 'Nunca', 'Casi nunca'],
+    ['Casi siempre', 'Algunas veces', 'Rara vez', 'Casi nunca'],
+    [],
+    [], //11 extra de la 7
   ];
 
   void incrementar_contador() {
@@ -161,8 +165,13 @@ class _HomeState extends State<Home> {
       num_pregunta++;
       cnt_pregunta++;
       //Seccion 6, 7, 8, 9
-      if (num_pregunta == 32 || num_pregunta ==38 || num_pregunta == 68 || num_pregunta == 96) {
+      if (num_pregunta == 32 ||
+          num_pregunta == 38 ||
+          num_pregunta == 68 ||
+          num_pregunta == 96) {
+        cnt++;
         seccion++;
+        seccionTitulo = seccion;
         cnt_pregunta = 0;
       }
     });
@@ -171,6 +180,17 @@ class _HomeState extends State<Home> {
   void decrementar_contador() {
     setState(() {
       cnt_pregunta--;
+      num_pregunta--;
+      //Seccion 6, 7, 8, 9
+      if (num_pregunta == 31 ||
+          num_pregunta == 37 ||
+          num_pregunta == 67 ||
+          num_pregunta == 95) {
+        seccion--;
+        seccionTitulo = seccion;
+        cnt_pregunta = num_pregunta - aux[cnt - 1];
+        cnt--;
+      }
     });
   }
 
@@ -206,7 +226,7 @@ class _HomeState extends State<Home> {
           child: Container(
             child: Center(
               child: Text(
-                'Sección ${seccion}', //cambiar
+                'Sección ${seccionTitulo}', //cambiar
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
