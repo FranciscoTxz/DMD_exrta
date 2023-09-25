@@ -38,7 +38,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int seccion = 6;
-  int? numseccion;
+  int? numseccion = 6;
   List<int> numpreguntas = [0, 0, 0, 0, 0, 4, 2, 5, 4, 4];
   int cnt_pregunta = 0; // Índice de la pregunta seleccionada
   int? opcion_seleccionada; // Variable para almacenar la opción seleccionada
@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
           child: Container(
             child: Center(
               child: Text(
-                'Sección ${seccion}', //cambiar
+                'Sección ${numseccion}', //cambiar
                 style: TextStyle(
                   fontSize: 30,
                 ),
