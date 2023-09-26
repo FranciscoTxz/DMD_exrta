@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'pagina2.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -181,6 +183,12 @@ class _HomeState extends State<Home> {
         if (num_pregunta != 85) {
           num_pregunta++;
           cnt_pregunta++;
+        }
+
+        if (num_pregunta == 85) {
+          //llamar seccion 10
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Pagina2()));
         }
 
         if (num_pregunta >= 35 && num_pregunta <= 37) {
